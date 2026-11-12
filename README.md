@@ -1,77 +1,56 @@
-# DevOps Lab 6: Kiểm thử & Phân tích Mã nguồn Tĩnh
+# Lab 6: Kiểm thử & Phân tích Mã nguồn Tĩnh trong DevOps
 
-Repository thực hành **Bài 6 — Kiểm thử & Phân tích Mã nguồn Tĩnh trong DevOps** (Postman/Newman CLI, OWASP ZAP DAST, SonarQube SAST, và CI Pipeline).
-
-## Cấu trúc Dự án
+## Cấu trúc thư mục
 
 ```text
 .
 ├── server.js                    # Sample Student API (Node.js + Express)
-├── package.json                 # Dependencies & npm scripts
+├── package.json                 # Khai báo dependencies và scripts
 ├── Student-API-Tests.json       # Postman Collection v2.1 (5 requests, 12 assertions)
-├── Student-API-Env.json         # Postman Environment ({{base_url}})
-├── newman-report.json           # Kết quả chạy Newman CLI
+├── newman-report.json           # Báo cáo kết quả chạy Newman CLI
 ├── sonar-project.properties     # Cấu hình SonarQube Scanner
-├── ci-test.sh                   # Script CI tổng hợp (SAST + API Test + DAST)
-├── Jenkinsfile                  # Pipeline mẫu cho Jenkins (mở rộng)
-├── .github/workflows/ci.yml     # GitHub Actions CI chạy Newman API Tests
-└── Lab6_Report.md               # Bảng so sánh 3 loại kiểm thử & phân tích kết quả
+├── ci-test.sh                   # Script CI pipeline (SAST + API Test + DAST)
+├── Lab6_Report.md               # Báo cáo so sánh 3 loại kiểm thử (Bước 6)
+└── README.md
 ```
 
-## Hướng dẫn Chạy Nhanh
+## Hướng dẫn chạy
 
-### 1. Cài đặt & Chạy Sample API
+### 1. Khởi động Sample API
 
 ```bash
 npm install
 npm start
 ```
 
-Kiểm tra API tại `http://localhost:3000/api/students`:
+API chạy tại `http://localhost:3000`:
+- `GET /api/students`
+- `GET /api/students/:id`
+- `POST /api/students`
+- `PUT /api/students/:id`
+- `DELETE /api/students/:id`
+- `GET /api/search?q=`
+- `GET /api/debug`
 
-```bash
-curl http://localhost:3000/api/students
-```
-
-### 2. Chạy API Functional Tests với Newman CLI
-
-Trong terminal khác (khi `server.js` đang chạy):
-
-```bash
-npm run test:api
-```
-
-Hoặc chạy trực tiếp:
+### 2. Kiểm thử API với Newman CLI
 
 ```bash
 npx newman run Student-API-Tests.json --reporters cli,json --reporter-json-export newman-report.json
 ```
 
-**Kết quả đã kiểm chứng:** 5/5 requests pass, 12/12 assertions pass, 0 failed.
+### 3. Quét bảo mật với OWASP ZAP (DAST)
 
-### 3. Quét Bảo mật DAST với OWASP ZAP (khi đã cài ZAP)
+Khởi động OWASP ZAP (proxy `http://127.0.0.1:8080`, bật API và tắt API Key), thực hiện Spider + Active Scan đối với `http://localhost:3000` và xuất báo cáo `zap-report.html`.
 
-1. Khởi động OWASP ZAP (proxy mặc định `http://127.0.0.1:8080`, bật API và tắt API Key nếu dùng script).
-2. Chạy Automated Scan vào `http://localhost:3000` hoặc dùng Stage 4 trong `ci-test.sh`.
-3. Xuất báo cáo ra `zap-report.html`.
-
-### 4. Phân tích Mã nguồn Tĩnh SAST với SonarQube (khi có Docker)
+### 4. Phân tích mã nguồn tĩnh với SonarQube (SAST)
 
 ```bash
 docker run -d --name lab6-sonarqube -p 9000:9000 -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true sonarqube:lts-community
+npx sonar-scanner -Dsonar.token=<SONAR_TOKEN>
 ```
 
-Sau khi tạo project `devops-lab6` và lấy token trên `http://localhost:9000`:
-
-```bash
-export SONAR_TOKEN=<your-token>
-npx sonar-scanner -Dsonar.token=$SONAR_TOKEN
-```
-
-### 5. Chạy CI Script Tổng hợp
+### 5. Chạy CI Script
 
 ```bash
 bash ci-test.sh
 ```
-
-> Lưu ý: Nếu chưa set `SONAR_TOKEN` hoặc chưa bật OWASP ZAP, `ci-test.sh` sẽ bỏ qua các stage chưa sẵn sàng và vẫn chạy stage khởi động API + Newman tests.
