@@ -1,0 +1,29 @@
+{
+  "name": "devops-lab6-testing",
+  "version": "1.0.0",
+  "description": "Lab 6: Kiểm thử & Phân tích Mã nguồn Tĩnh trong DevOps (Postman/Newman, OWASP ZAP, SonarQube)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test:api": "newman run Student-API-Tests.json --reporters cli,json --reporter-json-export newman-report.json",
+    "test": "npm run test:api"
+  },
+  "keywords": [
+    "devops",
+    "testing",
+    "newman",
+    "postman",
+    "owasp-zap",
+    "sonarqube",
+    "dast",
+    "sast"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "newman": "^6.2.1"
+  }
+}

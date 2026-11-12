@@ -1,0 +1,1700 @@
+{
+  "collection": {
+    "_": {
+      "postman_id": "6f2f9b10-6a01-4c22-9f0a-lab6studentapi"
+    },
+    "item": [
+      {
+        "id": "8fa49a5a-0a03-4feb-bc17-df727af975a3",
+        "name": "GET All Students",
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "students"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "GET"
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "e886b51d-8cc0-416c-9306-29f3b04456db",
+              "type": "text/javascript",
+              "exec": [
+                "// Test status code",
+                "pm.test(\"Status code is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "// Test response structure",
+                "pm.test(\"Response has success field\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData.success).to.be.true;",
+                "});",
+                "",
+                "// Test data is array",
+                "pm.test(\"Data is an array\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData.data).to.be.an('array');",
+                "});",
+                "",
+                "// Test at least 3 students",
+                "pm.test(\"Has at least 3 students\", function () {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData.data.length).to.be.at.least(3);",
+                "});",
+                "",
+                "// Test response time",
+                "pm.test(\"Response time < 200ms\", function () {",
+                "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                "});"
+              ],
+              "_lastExecutionId": "979e1f9a-1557-4463-a098-86ac3d593cd2"
+            }
+          }
+        ]
+      },
+      {
+        "id": "eea75660-923d-47c9-b2eb-983acc044aab",
+        "name": "GET Student by ID",
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "students",
+              "SV001"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "GET"
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "98999c15-6543-48ce-a2e3-41a9ac790bec",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 200\", () => {",
+                "    pm.response.to.have.status(200);",
+                "});",
+                "",
+                "pm.test(\"Returns correct student\", () => {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData.data.name).to.equal(\"Nguyen Van A\");",
+                "});"
+              ],
+              "_lastExecutionId": "d15c365b-4672-483c-a621-45c9a6069e2e"
+            }
+          }
+        ]
+      },
+      {
+        "id": "39cc6e05-98c7-4e20-b355-d0736df950f3",
+        "name": "POST Create Student",
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "students"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"id\": \"SV004\",\n    \"name\": \"Pham Thi D\",\n    \"age\": 22,\n    \"grade\": \"K19\"\n}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "f41bb83d-650d-4737-8edb-d3b42d7e345a",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 201\", () => {",
+                "    pm.response.to.have.status(201);",
+                "});",
+                "",
+                "pm.test(\"Returns created student\", () => {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData.data.name).to.equal(\"Pham Thi D\");",
+                "});"
+              ],
+              "_lastExecutionId": "c5641248-b394-47c3-98d1-9a0f71509835"
+            }
+          }
+        ]
+      },
+      {
+        "id": "1bd2b870-a82d-4ad4-94e9-fd8d22da46c2",
+        "name": "GET Student Not Found (404)",
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "students",
+              "SV999"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "GET"
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "7509c6bc-557e-42e7-a642-82192e61e64c",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 404\", () => {",
+                "    pm.response.to.have.status(404);",
+                "});",
+                "",
+                "pm.test(\"Returns error message\", () => {",
+                "    var jsonData = pm.response.json();",
+                "    pm.expect(jsonData.success).to.be.false;",
+                "});"
+              ],
+              "_lastExecutionId": "9350a0d3-dc69-4245-8ae4-8cee6ccf3c66"
+            }
+          }
+        ]
+      },
+      {
+        "id": "c71a9c33-b19a-49bb-897a-03fcdded53ff",
+        "name": "POST Missing Fields (Validation)",
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "students"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"name\": \"Test\"\n}"
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "effee07a-b0ab-4873-8ece-d98a8dadc5ac",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 400\", () => {",
+                "    pm.response.to.have.status(400);",
+                "});"
+              ],
+              "_lastExecutionId": "99afc7b6-266d-4c69-8dd9-c8fb33fcc23b"
+            }
+          }
+        ]
+      }
+    ],
+    "event": [],
+    "variable": [],
+    "info": {
+      "_postman_id": "6f2f9b10-6a01-4c22-9f0a-lab6studentapi",
+      "name": "Student API Tests",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "description": {
+        "content": "Postman Collection for Lab 6: Kiểm thử & Phân tích Mã nguồn Tĩnh trong DevOps",
+        "type": "text/plain"
+      }
+    }
+  },
+  "environment": {
+    "id": "e0288f26-d241-4164-85ee-d3fca3c12092",
+    "values": []
+  },
+  "globals": {
+    "id": "ee8a39f9-c497-4213-87e6-1977d03da0d6",
+    "values": []
+  },
+  "run": {
+    "stats": {
+      "iterations": {
+        "total": 1,
+        "pending": 0,
+        "failed": 0
+      },
+      "items": {
+        "total": 5,
+        "pending": 0,
+        "failed": 0
+      },
+      "scripts": {
+        "total": 5,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequests": {
+        "total": 5,
+        "pending": 0,
+        "failed": 0
+      },
+      "requests": {
+        "total": 5,
+        "pending": 0,
+        "failed": 0
+      },
+      "tests": {
+        "total": 5,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 12,
+        "pending": 0,
+        "failed": 0
+      },
+      "testScripts": {
+        "total": 5,
+        "pending": 0,
+        "failed": 0
+      },
+      "prerequestScripts": {
+        "total": 0,
+        "pending": 0,
+        "failed": 0
+      }
+    },
+    "timings": {
+      "responseAverage": 13.2,
+      "responseMin": 3,
+      "responseMax": 33,
+      "responseSd": 10.961751684835775,
+      "dnsAverage": 0,
+      "dnsMin": 0,
+      "dnsMax": 0,
+      "dnsSd": 0,
+      "firstByteAverage": 0,
+      "firstByteMin": 0,
+      "firstByteMax": 0,
+      "firstByteSd": 0,
+      "started": 1794445840656,
+      "completed": 1794445840868
+    },
+    "executions": [
+      {
+        "cursor": {
+          "position": 0,
+          "iteration": 0,
+          "length": 5,
+          "cycles": 1,
+          "empty": false,
+          "eof": false,
+          "bof": true,
+          "cr": false,
+          "ref": "a6ddb777-7adb-4481-a139-73d4791ac315",
+          "httpRequestId": "8e1c0c66-5ddc-46e0-af63-ff1038c13f70"
+        },
+        "item": {
+          "id": "8fa49a5a-0a03-4feb-bc17-df727af975a3",
+          "name": "GET All Students",
+          "request": {
+            "url": {
+              "protocol": "http",
+              "port": "3000",
+              "path": [
+                "api",
+                "students"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e886b51d-8cc0-416c-9306-29f3b04456db",
+                "type": "text/javascript",
+                "exec": [
+                  "// Test status code",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Test response structure",
+                  "pm.test(\"Response has success field\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});",
+                  "",
+                  "// Test data is array",
+                  "pm.test(\"Data is an array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "// Test at least 3 students",
+                  "pm.test(\"Has at least 3 students\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.length).to.be.at.least(3);",
+                  "});",
+                  "",
+                  "// Test response time",
+                  "pm.test(\"Response time < 200ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});"
+                ],
+                "_lastExecutionId": "979e1f9a-1557-4463-a098-86ac3d593cd2"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "students"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "5ca249ff-066a-432b-9434-20e1890f939a",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "186b1a63-c410-4e61-a940-e6030b05e47b",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "209"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"d1-S3YltoTLuienQM5koTkZr7E6O7Y\""
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Nov 2026 01:10:40 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              115,
+              117,
+              99,
+              99,
+              101,
+              115,
+              115,
+              34,
+              58,
+              116,
+              114,
+              117,
+              101,
+              44,
+              34,
+              100,
+              97,
+              116,
+              97,
+              34,
+              58,
+              91,
+              123,
+              34,
+              105,
+              100,
+              34,
+              58,
+              34,
+              83,
+              86,
+              48,
+              48,
+              49,
+              34,
+              44,
+              34,
+              110,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              78,
+              103,
+              117,
+              121,
+              101,
+              110,
+              32,
+              86,
+              97,
+              110,
+              32,
+              65,
+              34,
+              44,
+              34,
+              97,
+              103,
+              101,
+              34,
+              58,
+              50,
+              48,
+              44,
+              34,
+              103,
+              114,
+              97,
+              100,
+              101,
+              34,
+              58,
+              34,
+              75,
+              50,
+              48,
+              34,
+              125,
+              44,
+              123,
+              34,
+              105,
+              100,
+              34,
+              58,
+              34,
+              83,
+              86,
+              48,
+              48,
+              50,
+              34,
+              44,
+              34,
+              110,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              84,
+              114,
+              97,
+              110,
+              32,
+              84,
+              104,
+              105,
+              32,
+              66,
+              34,
+              44,
+              34,
+              97,
+              103,
+              101,
+              34,
+              58,
+              50,
+              49,
+              44,
+              34,
+              103,
+              114,
+              97,
+              100,
+              101,
+              34,
+              58,
+              34,
+              75,
+              50,
+              48,
+              34,
+              125,
+              44,
+              123,
+              34,
+              105,
+              100,
+              34,
+              58,
+              34,
+              83,
+              86,
+              48,
+              48,
+              51,
+              34,
+              44,
+              34,
+              110,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              76,
+              101,
+              32,
+              86,
+              97,
+              110,
+              32,
+              67,
+              34,
+              44,
+              34,
+              97,
+              103,
+              101,
+              34,
+              58,
+              49,
+              57,
+              44,
+              34,
+              103,
+              114,
+              97,
+              100,
+              101,
+              34,
+              58,
+              34,
+              75,
+              50,
+              49,
+              34,
+              125,
+              93,
+              44,
+              34,
+              116,
+              111,
+              116,
+              97,
+              108,
+              34,
+              58,
+              51,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 33,
+          "responseSize": 209
+        },
+        "id": "8fa49a5a-0a03-4feb-bc17-df727af975a3",
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false
+          },
+          {
+            "assertion": "Response has success field",
+            "skipped": false
+          },
+          {
+            "assertion": "Data is an array",
+            "skipped": false
+          },
+          {
+            "assertion": "Has at least 3 students",
+            "skipped": false
+          },
+          {
+            "assertion": "Response time < 200ms",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "3dfd8b58-1a33-4c7c-85ee-f6e853ab0af5",
+          "length": 5,
+          "cycles": 1,
+          "position": 1,
+          "iteration": 0,
+          "httpRequestId": "aa562038-6720-4896-9d7f-09c11c27046c"
+        },
+        "item": {
+          "id": "eea75660-923d-47c9-b2eb-983acc044aab",
+          "name": "GET Student by ID",
+          "request": {
+            "url": {
+              "protocol": "http",
+              "port": "3000",
+              "path": [
+                "api",
+                "students",
+                "SV001"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "98999c15-6543-48ce-a2e3-41a9ac790bec",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Returns correct student\", () => {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.name).to.equal(\"Nguyen Van A\");",
+                  "});"
+                ],
+                "_lastExecutionId": "d15c365b-4672-483c-a621-45c9a6069e2e"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "students",
+              "SV001"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "af835479-186e-4c5a-9c8d-3325f1d33b76",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "aa38f1d3-33a8-4727-af15-b1a380c860b5",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "83"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"53-vzY0JE+31qjzkLerSaPKd4PX4Y8\""
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Nov 2026 01:10:40 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              115,
+              117,
+              99,
+              99,
+              101,
+              115,
+              115,
+              34,
+              58,
+              116,
+              114,
+              117,
+              101,
+              44,
+              34,
+              100,
+              97,
+              116,
+              97,
+              34,
+              58,
+              123,
+              34,
+              105,
+              100,
+              34,
+              58,
+              34,
+              83,
+              86,
+              48,
+              48,
+              49,
+              34,
+              44,
+              34,
+              110,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              78,
+              103,
+              117,
+              121,
+              101,
+              110,
+              32,
+              86,
+              97,
+              110,
+              32,
+              65,
+              34,
+              44,
+              34,
+              97,
+              103,
+              101,
+              34,
+              58,
+              50,
+              48,
+              44,
+              34,
+              103,
+              114,
+              97,
+              100,
+              101,
+              34,
+              58,
+              34,
+              75,
+              50,
+              48,
+              34,
+              125,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 6,
+          "responseSize": 83
+        },
+        "id": "eea75660-923d-47c9-b2eb-983acc044aab",
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false
+          },
+          {
+            "assertion": "Returns correct student",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "3f65ea77-059d-4a2b-9f79-1d3804af8aee",
+          "length": 5,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "97588a5a-be16-499d-9296-786df15dc5e5"
+        },
+        "item": {
+          "id": "39cc6e05-98c7-4e20-b355-d0736df950f3",
+          "name": "POST Create Student",
+          "request": {
+            "url": {
+              "protocol": "http",
+              "port": "3000",
+              "path": [
+                "api",
+                "students"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": \"SV004\",\n    \"name\": \"Pham Thi D\",\n    \"age\": 22,\n    \"grade\": \"K19\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "f41bb83d-650d-4737-8edb-d3b42d7e345a",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", () => {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Returns created student\", () => {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.name).to.equal(\"Pham Thi D\");",
+                  "});"
+                ],
+                "_lastExecutionId": "c5641248-b394-47c3-98d1-9a0f71509835"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "students"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "b837d86e-c564-4dbc-a3f2-9d42924f0439",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "82",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"id\": \"SV004\",\n    \"name\": \"Pham Thi D\",\n    \"age\": 22,\n    \"grade\": \"K19\"\n}"
+          }
+        },
+        "response": {
+          "id": "884bb834-f46c-451e-afd4-f9813dfe7dda",
+          "status": "Created",
+          "code": 201,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "81"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"51-FgABEd4eKQHygVEQYxXmQxGMBNQ\""
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Nov 2026 01:10:40 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              115,
+              117,
+              99,
+              99,
+              101,
+              115,
+              115,
+              34,
+              58,
+              116,
+              114,
+              117,
+              101,
+              44,
+              34,
+              100,
+              97,
+              116,
+              97,
+              34,
+              58,
+              123,
+              34,
+              105,
+              100,
+              34,
+              58,
+              34,
+              83,
+              86,
+              48,
+              48,
+              52,
+              34,
+              44,
+              34,
+              110,
+              97,
+              109,
+              101,
+              34,
+              58,
+              34,
+              80,
+              104,
+              97,
+              109,
+              32,
+              84,
+              104,
+              105,
+              32,
+              68,
+              34,
+              44,
+              34,
+              97,
+              103,
+              101,
+              34,
+              58,
+              50,
+              50,
+              44,
+              34,
+              103,
+              114,
+              97,
+              100,
+              101,
+              34,
+              58,
+              34,
+              75,
+              49,
+              57,
+              34,
+              125,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 17,
+          "responseSize": 81
+        },
+        "id": "39cc6e05-98c7-4e20-b355-d0736df950f3",
+        "assertions": [
+          {
+            "assertion": "Status code is 201",
+            "skipped": false
+          },
+          {
+            "assertion": "Returns created student",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "ba51495f-38b8-4efd-b364-07b7883f9173",
+          "length": 5,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "bd576937-37dd-4df2-ad19-99c95ebcc376"
+        },
+        "item": {
+          "id": "1bd2b870-a82d-4ad4-94e9-fd8d22da46c2",
+          "name": "GET Student Not Found (404)",
+          "request": {
+            "url": {
+              "protocol": "http",
+              "port": "3000",
+              "path": [
+                "api",
+                "students",
+                "SV999"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7509c6bc-557e-42e7-a642-82192e61e64c",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", () => {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Returns error message\", () => {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.false;",
+                  "});"
+                ],
+                "_lastExecutionId": "9350a0d3-dc69-4245-8ae4-8cee6ccf3c66"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "students",
+              "SV999"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "0e7e4e7a-7f26-480f-80d6-4133ac70b894",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "f1e45f6d-ab9b-483e-8eda-682791e02d21",
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "47"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"2f-CcyZLWZCGVWXlNqu57Mf/PW6lkA\""
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Nov 2026 01:10:40 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              115,
+              117,
+              99,
+              99,
+              101,
+              115,
+              115,
+              34,
+              58,
+              102,
+              97,
+              108,
+              115,
+              101,
+              44,
+              34,
+              109,
+              101,
+              115,
+              115,
+              97,
+              103,
+              101,
+              34,
+              58,
+              34,
+              83,
+              116,
+              117,
+              100,
+              101,
+              110,
+              116,
+              32,
+              110,
+              111,
+              116,
+              32,
+              102,
+              111,
+              117,
+              110,
+              100,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 3,
+          "responseSize": 47
+        },
+        "id": "1bd2b870-a82d-4ad4-94e9-fd8d22da46c2",
+        "assertions": [
+          {
+            "assertion": "Status code is 404",
+            "skipped": false
+          },
+          {
+            "assertion": "Returns error message",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "3c17a730-b38b-4499-9832-81316e8b784c",
+          "length": 5,
+          "cycles": 1,
+          "position": 4,
+          "iteration": 0,
+          "httpRequestId": "9b415921-809f-402f-bf55-8c5697b39597"
+        },
+        "item": {
+          "id": "c71a9c33-b19a-49bb-897a-03fcdded53ff",
+          "name": "POST Missing Fields (Validation)",
+          "request": {
+            "url": {
+              "protocol": "http",
+              "port": "3000",
+              "path": [
+                "api",
+                "students"
+              ],
+              "host": [
+                "localhost"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Test\"\n}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "effee07a-b0ab-4873-8ece-d98a8dadc5ac",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", () => {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "_lastExecutionId": "99afc7b6-266d-4c69-8dd9-c8fb33fcc23b"
+              }
+            }
+          ]
+        },
+        "request": {
+          "url": {
+            "protocol": "http",
+            "port": "3000",
+            "path": [
+              "api",
+              "students"
+            ],
+            "host": [
+              "localhost"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.39.1",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "5d2cc694-b1f7-42e5-a4ca-04f0424ee6dc",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "localhost:3000",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "22",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"name\": \"Test\"\n}"
+          }
+        },
+        "response": {
+          "id": "91900ca3-de21-4651-834b-acf7085a990d",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "53"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"35-t3gMwAiAuF9F+TQLMVmqfqjZZdQ\""
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 12 Nov 2026 01:10:40 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              115,
+              117,
+              99,
+              99,
+              101,
+              115,
+              115,
+              34,
+              58,
+              102,
+              97,
+              108,
+              115,
+              101,
+              44,
+              34,
+              109,
+              101,
+              115,
+              115,
+              97,
+              103,
+              101,
+              34,
+              58,
+              34,
+              77,
+              105,
+              115,
+              115,
+              105,
+              110,
+              103,
+              32,
+              114,
+              101,
+              113,
+              117,
+              105,
+              114,
+              101,
+              100,
+              32,
+              102,
+              105,
+              101,
+              108,
+              100,
+              115,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 7,
+          "responseSize": 53
+        },
+        "id": "c71a9c33-b19a-49bb-897a-03fcdded53ff",
+        "assertions": [
+          {
+            "assertion": "Status code is 400",
+            "skipped": false
+          }
+        ]
+      }
+    ],
+    "transfers": {
+      "responseTotal": 473
+    },
+    "failures": [],
+    "error": null
+  }
+}

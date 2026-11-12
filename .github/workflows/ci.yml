@@ -1,0 +1,39 @@
+name: Lab 6 DevOps Testing CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start Student API & Run Newman Functional Tests
+        run: |
+          node server.js &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID 2>/dev/null || true" EXIT
+          sleep 2
+          curl -sf http://localhost:3000/api/students > /dev/null
+          npx newman run Student-API-Tests.json --reporters cli,json --reporter-json-export newman-report.json
+
+      - name: Upload Newman Report Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report
+          path: newman-report.json
