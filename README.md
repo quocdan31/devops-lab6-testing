@@ -8,8 +8,15 @@
 ├── package.json                 # Khai báo dependencies và scripts
 ├── Student-API-Tests.json       # Postman Collection v2.1 (5 requests, 12 assertions)
 ├── newman-report.json           # Báo cáo kết quả chạy Newman CLI
+├── zap-report.html              # Báo cáo quét bảo mật OWASP ZAP (DAST)
 ├── sonar-project.properties     # Cấu hình SonarQube Scanner
 ├── ci-test.sh                   # Script CI pipeline (SAST + API Test + DAST)
+├── screenshots/                 # Ảnh chụp kết quả các bước kiểm thử
+│   ├── 01-newman-pass.png
+│   ├── 02-zap-alerts.png
+│   ├── 03-sonarqube-dashboard.png
+│   ├── 04-sonarqube-issues.png
+│   └── 05-comparison-table.png
 ├── Lab6_Report.md               # Báo cáo so sánh 3 loại kiểm thử (Bước 6)
 └── README.md
 ```
